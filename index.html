@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Benim Gibi Gerçek Yapay Zeka</title>
+    <style>
+        body { font-family: sans-serif; background: #1e1e2e; color: #cdd6f4; text-align: center; padding: 20px; margin: 0; }
+        .chat-container { background: #313244; max-width: 500px; margin: 20px auto; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+        .chat-box { height: 380px; overflow-y: auto; padding: 15px; text-align: left; display: flex; flex-direction: column; gap: 10px; }
+        .mesaj { padding: 10px 14px; border-radius: 12px; max-width: 75%; font-size: 0.95em; line-height: 1.4; }
+        .kullanici { background: #89b4fa; color: #11111b; align-self: flex-end; }
+        .yapay-zeka { background: #45475a; color: #cdd6f4; align-self: flex-start; }
+        .input-area { padding: 15px; display: flex; gap: 10px; background: #11111b; }
+        input { flex: 1; padding: 12px; border-radius: 8px; border: none; background: #313244; color: #cdd6f4; outline: none; }
+        button { padding: 12px 20px; background: #a6e3a1; color: #11111b; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+    <h2>🤖 %100 Engelsiz Canlı Yapay Zeka Botu</h2>
+    <p>GitHub Pages altyapısında çalıştığı için hiçbir site veya platform seni engelleyemez!</p>
+
+    <div class="chat-container">
+        <div class="chat-box" id="chatBox">
+            <div class="mesaj yapay-zeka">Merhaba! Sonunda tamamen özgürüz ve internet engellerini aştık. Bana Minecraft taktikleri, Tofaş eklentileri veya kodlama hakkında her şeyi sorabilirsin! 😊</div>
+        </div>
+        <div class="input-area">
+            <input type="text" id="kullaniciMesaji" placeholder="Bir şeyler yazın..." onkeypress="if(event.key === 'Enter') mesajGonder()">
+            <button onclick="mesajGonder()">Gönder</button>
+        </div>
+    </div>
+
+    <script>
+    async function mesajGonder() {
+        const inputAlani = document.getElementById("kullaniciMesaji");
+        const chatBox = document.getElementById("chatBox");
+        const kullaniciMetni = inputAlani.value.trim();
+
+        if (kullaniciMetni === "") return;
+
+        // Kullanıcının mesajını ekrana yaz
+        chatBox.innerHTML += `<div class="mesaj kullanici">${kullaniciMetni}</div>`;
+        inputAlani.value = "";
+        chatBox.scrollTop = chatBox.scrollHeight;
+
+        // Düşünüyor baloncuğu ekle
+        const dusunuyorId = "dusunuyor-" + Date.now();
+        chatBox.innerHTML += `<div class="mesaj yapay-zeka" id="${dusunuyorId}">Düşünüyorum... 🧠</div>`;
+        chatBox.scrollTop = chatBox.scrollHeight;
+
+        try {
+            // Doğrudan açık kaynaklı yapay zeka sunucusuna bağlanıyoruz, GitHub üzerinde bu asla engellenmez!
+            const response = await fetch("https://pollinations.ai" + encodeURIComponent(kullaniciMetni + " (Lütfen tamamen Türkçe, çok akıllı, samimi ve detaylı cevap veren bir yapay zeka asistanı ol. Kısa kesme, uzun ve mantıklı açıkla.)"));
+            
+            if (!response.ok) throw new Error("API hatası");
+            const botunCevabi = await response.text();
+
+            // Düşünüyor yazısını kaldır ve üretilen benzersiz cevabı bas
+            document.getElementById(dusunuyorId).remove();
+            chatBox.innerHTML += `<div class="mesaj yapay-zeka">${botunCevabi}</div>`;
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+        } catch (hata) {
+            document.getElementById(dusunuyorId).innerText = "Bağlantı hatası! Lütfen internetinizi kontrol edin. ❌";
+        }
+    }
+    </script>
+</body>
+</html>
